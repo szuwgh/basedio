@@ -1,2 +1,2 @@
-# basedio
+# baseio
 Embedded object storage
