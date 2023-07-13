@@ -1,1 +1,5 @@
-trait Storage {}
+trait StorageAPI {}
+
+struct Poxis {}
+
+struct RemotePoxis {}
