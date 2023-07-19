@@ -1,8 +1,10 @@
 use super::object::ObjectManager;
 use serde_derive::{Deserialize, Serialize};
 use std::convert::Infallible;
-use warp::{Filter, Rejection, Reply};
-
+use warp::hyper::Body;
+use warp::Rejection;
+use warp::{http::Response, Filter};
+use warp::{http::StatusCode, reject, reply::json, Reply};
 #[derive(Debug, Deserialize, Serialize)]
 struct Success {
     s: String,
@@ -21,9 +23,12 @@ impl ObjectAPIFunction {
         bucket: String,
         s: ObjectManager,
     ) -> Result<impl Reply, Rejection> {
-        Ok(warp::reply::json(&Success {
-            s: "put_bucket".to_string(),
-        }))
+        s.make_bucket(&bucket);
+        //  warp::reply::with_header(reply, name, value)
+        Ok(Response::builder()
+            .status(StatusCode::OK)
+            .body(Body::empty()))
+        //Ok(StatusCode::OK)
     }
 
     pub(crate) async fn delete_bucket(
@@ -34,4 +39,6 @@ impl ObjectAPIFunction {
             s: "delete_bucket".to_string(),
         }))
     }
+
+    pub fn write_success_response() {}
 }
